@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var _cli = require('commander');
+
+_cli
+    .version('0.1.0')
+    .description('Batch convert markdown files into HTML.')
+    .option('-o, --output <dir>', 'Output directory. You can set the output to the current folder by setting it to ".", not recommended tho.')
+    .option('-i, --input [dir]', 'Input directory. Defaults to current directory.', '.')
+    .option('--include [glob]', 'Glob used for inclusion. Defaults to "**/*.md". Set it accordingly to you markdown files extensions, eg "*.mdown".', '**/*.md')
+    .option('--exclude [glob]', 'Glob used for exclusion. Defaults to "node_modules/**"', 'node_modules/**')
+    .option('--header [path]', 'Path to HTML file used as header on all documents.')
+    .option('--footer [path]', 'Path to HTML file used as footer on all documents.')
+    .option('--encoding [encoding]', 'File encoding. Defaults to "utf-8"', 'utf-8.');
+
+
+_cli.parse(process.argv);
+
+
+if (! _cli.output) {
+    console.log(' Please specify an output directory. See `mdown -h` for details.');
+    process.exit(1);
+}
+
+
+require('../mdown').run(_cli);
