@@ -9,10 +9,12 @@ Batch convert Markdown files into HTML.
 Install [node.js](http://nodejs.org/) 0.6.0+ and run:
 
 ```sh
-sudo npm install gh-markdown-cli
+sudo npm install gh-markdown-cli -g
 ```
 
-This will install the executable on your `bin` folder.
+This will create an alis to the executable on your `/usr/local/bin` folder,
+if you install it without the `-g` flag you won't be able use it as global
+command-line utility.
 
 
 
