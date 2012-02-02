@@ -31,5 +31,6 @@
     "main" : "mdown.js",
     "bin" : {
         "mdown" : "bin/mdown"
-    }
+    },
+    "preferGlobal" : true
 }
