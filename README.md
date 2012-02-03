@@ -44,7 +44,7 @@ mdown -i src -o doc --include "**/*.mdown"
 You can specify HTML files to be used as header and footer of all the pages:
 
 ```sh
-mdown -o dist --header "assets/header.html" --footer "assets/header.html"
+mdown -o dist --header "assets/header.html" --footer "assets/footer.html"
 ```
 
 For a list of all available options run:
