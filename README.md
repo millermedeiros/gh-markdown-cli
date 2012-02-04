@@ -38,7 +38,7 @@ And if you want to use a different extension than `".md"` update the
 `--include` glob to match it:
 
 ```sh
-mdown -i src -o doc --include "**/*.mdown"
+mdown -o doc --include "**/*.mdown"
 ```
 
 You can specify HTML files to be used as header and footer of all the pages:
@@ -46,6 +46,17 @@ You can specify HTML files to be used as header and footer of all the pages:
 ```sh
 mdown -o dist --header "assets/header.html" --footer "assets/footer.html"
 ```
+
+And if you want to convert just a single file change the `--include` glob to
+match just a single file:
+
+```sh
+mdown -o . --include foo.md
+```
+
+The only required option is the `-o,--output`, just to avoid mistakes, set
+it to `.` if you want to use the current folder as the base folder for the
+output.
 
 For a list of all available options run:
 
