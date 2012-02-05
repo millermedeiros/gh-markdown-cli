@@ -31,7 +31,7 @@ This will convert any `.md` files it can find inside the `--input` directory
 and it's child folders and output them into the `--output` folder.
 
 If you want to convert only files inside the directory itself but ignore child
-folders change the `--include` glob to `"*.md"`:
+folders change the `--input` glob to `"*.md"`:
 
 ```sh
 mdown -i "src/*.md" -o doc
@@ -56,8 +56,8 @@ mdown -i "*.md" -o dist --header "assets/header.html" --footer "assets/header.ht
 
 ### stdin / stdout
 
-It also works with `stdin` and `stdout`, so you can pipe it into other
-command-line tools like `echo`, `cat`, `curl`, etc...
+It also works with `stdin` and `stdout`, so you can pipe other command-line
+tools like `echo`, `cat`, `curl`, etc...
 
 ```sh
 cat foo.md | mdown > foo.html
@@ -82,7 +82,7 @@ $ mdown -h
     -h, --help             output usage information
     -V, --version          output the version number
     -o, --output <name>    Output directory or output file name if using stdin for input.
-    -i, --input <glob>     Glob used for inclusion. Eg: "**/*.md" will convert all the ".md" files inside current folder and all it's child folders.
+    -i, --input <glob>     Glob used for inclusion. Eg: "**/*.md" will convert all the ".md" files inside current folder and all its child folders.
     --exclude <globs>      Comma separated list of globs used for exclusion. Defaults to "node_modules/**"
     --header <path>        Path to HTML file used as header on all documents.
     --footer <path>        Path to HTML file used as footer on all documents.
