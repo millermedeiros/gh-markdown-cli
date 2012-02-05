@@ -7,57 +7,87 @@ var _fs = require('fs'),
     _showdown = require('github-flavored-markdown');
 
 
-exports.run = function(opts){
+var DEFAULT_ENCODING = 'utf-8';
 
-    var encoding = opts.encoding || 'utf-8',
-        include = _path.join(opts.input, opts.include),
-        exclude = _path.join(opts.input, opts.exclude),
-        header = opts.header? _fs.readFileSync(opts.header) : '',
-        footer = opts.footer? _fs.readFileSync(opts.footer) : '',
-        rPathReplace = (opts.input === '.')? /^(.+)/ : new RegExp('^'+ opts.input +'(.+)');
 
-    _glob(include, null, function(er, files){
+exports.batchProcess = function(opts){
 
-        files
-            .filter(function(filePath){
-                return ! _minimatch(filePath, exclude);
-            })
-            .forEach(function(filePath){
-                var distPath = filePath.replace(rPathReplace, function(str, p1){
-                        return _path.join(opts.output, p1).replace(/\.[^\.]+$/, '.html');
-                    }),
-                    distFolder = _path.dirname(distPath);
+    opts.encoding = opts.encoding || DEFAULT_ENCODING;
 
-                if (distFolder) {
-                    _wrench.mkdirSyncRecursive(distFolder);
-                }
+    _glob(opts.input, null, function(er, files){
 
-                _fs.writeFileSync(distPath, header + toMdown(filePath, encoding) + footer, encoding);
-            });
+        if (opts.exclude) {
+            files = filterFiles(files, opts.exclude);
+        }
+
+        files.forEach(function(filePath){
+            var content = exports.toHTML(_fs.readFileSync(filePath, opts.encoding), opts);
+            if (opts.output) {
+                outputToFile(filePath, content, opts);
+            } else {
+                console.log(content);
+            }
+        });
 
     });
-
 };
 
-function toMdown(filePath, encoding){
-    var content = _fs.readFileSync(filePath, encoding);
-    content = normalizeLineBreaks(content, '\n');
+
+function filterFiles(files, exclude) {
+    var excludes = exclude.split(',');
+    return files.filter(function(filePath){
+        return ! excludes.some(function(glob){
+            return _minimatch(filePath, glob);
+        });
+    });
+}
+
+
+function outputToFile(filePath, content, opts){
+    var inputDir = opts.input.replace(/^([^\*]*).*/, '$1'),
+        rPathReplace = new RegExp('^'+ inputDir +'(.+)'),
+        distPath = filePath.replace(rPathReplace, function(str, p1){
+            return _path.join(opts.output, p1).replace(/\.[^\.]+$/, '.html');
+        }),
+        distFolder = _path.dirname(distPath);
+
+    if (distFolder) {
+        _wrench.mkdirSyncRecursive(distFolder);
+    }
+
+    _fs.writeFileSync(distPath, content, opts.encoding);
+}
+
+
+exports.toHTML = function(content, opts){
+    var header, footer;
+
+    if (opts) {
+        header = opts.header? _fs.readFileSync(opts.header, opts.encoding) : '';
+        footer = opts.footer? _fs.readFileSync(opts.footer, opts.encoding) : '';
+    }
+
+    content = normalizeLineBreaks(content);
     content = convertCodeBlocks(content);
-    return _showdown.parse(content);
+    return concat([header,  _showdown.parse(content), footer]);
+};
+
+function concat(arr){
+    return arr.filter(function(val){
+        return !!val;
+    }).join('\n');
 }
 
 
 //borrowed from amd-utils (http://millermedeiros.github.com/amd-utils)
 //author: Miller Medeiros
 function normalizeLineBreaks(str, lineEnd) {
-lineEnd = lineEnd || '\n';
-return str
-        .replace(/\r\n/g, lineEnd) // DOS
-        .replace(/\r/g, lineEnd) // Mac
-        .replace(/\n/g, lineEnd); // Unix
+    lineEnd = lineEnd || '\n';
+    return str
+            .replace(/\r\n/g, lineEnd) // DOS
+            .replace(/\r/g, lineEnd) // Mac
+            .replace(/\n/g, lineEnd); // Unix
 }
-
-
 
 // showdown have issues with the gh-style code blocks
 var _rCodeBlocks = /^```\s*(\w+)\s*$([\s\S]*?)^```$/gm;
