@@ -72,7 +72,7 @@ If you don't specify the `--output` it will echo the result to `stdout` by defau
 
 For a list of all available options run `mdown -h`:
 
-```sh
+```
 $ mdown -h
 
   Usage: mdown [options]
