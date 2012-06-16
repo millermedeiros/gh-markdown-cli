@@ -24,7 +24,7 @@ command-line utility.
 ### Basic
 
 ```sh
-find -name '*.md' -exec mdown --output doc {} \;
+find . -name '*.md' -exec mdown --output doc {} \;
 ```
 
 This will convert any `.md` files it can find underneath the current directory
