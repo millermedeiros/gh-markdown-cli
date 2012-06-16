@@ -1,7 +1,6 @@
 
 var _fs = require('fs'),
     _path = require('path'),
-    _glob = require('glob'),
     _minimatch = require('minimatch'),
     _wrench = require('wrench'),
     _showdown = require('github-flavored-markdown');
@@ -14,21 +13,19 @@ exports.batchProcess = function(opts){
 
     opts.encoding = opts.encoding || DEFAULT_ENCODING;
 
-    _glob(opts.input, null, function(er, files){
 
-        if (opts.exclude) {
-            files = filterFiles(files, opts.exclude);
+    var files = opts.input;
+    if (opts.exclude) {
+        files = filterFiles(files, opts.exclude);
+    }
+
+    files.forEach(function(filePath){
+        var content = exports.toHTML(_fs.readFileSync(filePath, opts.encoding), opts);
+        if (opts.output) {
+            outputToFile(filePath, content, opts);
+        } else {
+            console.log(content);
         }
-
-        files.forEach(function(filePath){
-            var content = exports.toHTML(_fs.readFileSync(filePath, opts.encoding), opts);
-            if (opts.output) {
-                outputToFile(filePath, content, opts);
-            } else {
-                console.log(content);
-            }
-        });
-
     });
 };
 
@@ -44,7 +41,7 @@ function filterFiles(files, exclude) {
 
 
 function outputToFile(filePath, content, opts){
-    var inputDir = opts.input.replace(/^([^\*]*).*/, '$1'),
+  var inputDir = _path.dirname(filePath),
         rPathReplace = new RegExp('^'+ inputDir +'(.+)'),
         distPath = filePath.replace(rPathReplace, function(str, p1){
             return _path.join(opts.output, p1).replace(/\.[^\.]+$/, '.html');

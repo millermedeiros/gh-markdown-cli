@@ -24,23 +24,23 @@ command-line utility.
 ### Basic
 
 ```sh
-mdown --input "**/*.md" --output doc
+find -name '*.md' -exec mdown --output doc {} \;
 ```
 
-This will convert any `.md` files it can find inside the `--input` directory
+This will convert any `.md` files it can find underneath the current directory
 and it's child folders and output them into the `--output` folder.
 
 If you want to convert only files inside the directory itself but ignore child
-folders change the `--input` glob to `"*.md"`:
+folders change shell glob to `"*.md"`:
 
 ```sh
-mdown -i "src/*.md" -o doc
+mdown -o doc src/*.md
 ```
 
 And to convert just a single file and output it into the current folder:
 
 ```sh
-mdown -i "foo.md" -o .
+mdown -o . foo.md
 ```
 
 
@@ -50,7 +50,7 @@ mdown -i "foo.md" -o .
 You can specify HTML files to be used as header and footer of all the pages:
 
 ```sh
-mdown -i "*.md" -o dist --header "assets/header.html" --footer "assets/header.html"
+mdown -o dist --header "assets/header.html" --footer "assets/header.html" *.md
 ```
 
 
@@ -67,7 +67,6 @@ curl https://raw.github.com/millermedeiros/gh-markdown-cli/master/README.md | md
 
 If you don't specify the `--output` it will echo the result to `stdout` by default.
 
-
 ### More
 
 For a list of all available options run `mdown -h`:
@@ -75,14 +74,13 @@ For a list of all available options run `mdown -h`:
 ```
 $ mdown -h
 
-  Usage: mdown [options]
+  Usage: mdown [options] file ...
 
   Options:
 
     -h, --help             output usage information
     -V, --version          output the version number
     -o, --output <name>    Output directory or output file name if using stdin for input.
-    -i, --input <glob>     Glob used for inclusion. Eg: "**/*.md" will convert all the ".md" files inside current folder and all its child folders.
     --exclude <globs>      Comma separated list of globs used for exclusion. Defaults to "node_modules/**"
     --header <path>        Path to HTML file used as header on all documents.
     --footer <path>        Path to HTML file used as footer on all documents.
