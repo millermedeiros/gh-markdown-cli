@@ -103,6 +103,10 @@ doesn't exist b) the output file is older than the input file c) the header or
 footer have been modified since last build.
 
 ```
+# Put this in a file named GNUmakefile
+# and your Markdown sources in a subdir called "md".
+# Header and footer should be in "assets/header.html" and "assets/footer.html" respectively.
+# HTML output will be written to "html" sub-dir.
 DOCS := $(wildcard md/*.md)
 DOCS_HTML := $(patsubst md/%, html/%, $(patsubst %.md,%.html,$(DOCS)))
 ASSETS := $(wildcard assets/*.html)
