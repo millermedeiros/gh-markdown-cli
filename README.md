@@ -87,6 +87,32 @@ $ mdown -h
     --encoding <encoding>  File encoding. Defaults to "utf-8".
 ```
 
+### Markdown dependency-based compilation via GNU Make
+
+A common scenario is to want to generate HTML from a directory full of Markdown
+files. The HTML output also depends upon a header and a footer file. However,
+the HTML output files should only be updated if the output does not already
+exist, the corresponding source Markdown has changed since last build - or if
+either the header or footer has changed.
+
+This is the problem that the venerable UNIX make(1) command has been designed
+to solve. Using GNU make, the below sample will compile each Markdown file in a
+"md" subdirectory into a corresponding HTML output file in a "html"
+subdirectory. The `mdown` program will only be executed if a) the output file
+doesn't exist b) the output file is older than the input file c) the header or
+footer have been modified since last build.
+
+```
+DOCS := $(wildcard md/*.md)
+DOCS_HTML := $(patsubst md/%, html/%, $(patsubst %.md,%.html,$(DOCS)))
+ASSETS := $(wildcard assets/*.html)
+
+all: $(DOCS_HTML)
+
+html/%.html : md/%.md $(ASSETS)
+	mdown -o html/ --header "assets/header.html" --footer "assets/footer.html" $<
+```
+
 
 ## Important
 
