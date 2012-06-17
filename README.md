@@ -104,7 +104,7 @@ footer have been modified since last build.
 
 ```
 # Put this in a file named GNUmakefile
-# and your Markdown sources in a subdir called "md".
+# and your Markdown sources in a sub-dir called "md".
 # Header and footer should be in "assets/header.html" and "assets/footer.html" respectively.
 # HTML output will be written to "html" sub-dir.
 DOCS := $(wildcard md/*.md)
