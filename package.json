@@ -28,9 +28,16 @@
         "minimatch" : ">= 0.1.0",
         "commander" : ">= 0.4.0"
     },
+    "devDependencies": {
+        "chai": ">=1.0.4",
+        "mocha": ">=1.1.0"
+    },
     "main" : "mdown.js",
     "bin" : {
         "mdown" : "bin/mdown"
     },
-    "preferGlobal" : true
+    "preferGlobal" : true,
+    "scripts" : {
+        "test" : "node_modules/mocha/bin/mocha -R tap tests"
+    }
 }
