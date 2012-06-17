@@ -8,6 +8,7 @@ _cli
     .version('0.2.0')
     .description('Batch convert markdown files into HTML.')
     .option('-o, --output <name>', 'Output directory or output file name if using stdin for input.')
+    .option('-i, --input <glob>', 'Glob used for inclusion. Eg: "**/*.md" will convert all the ".md" files inside current folder and all its child folders.')
     .option('--exclude <globs>', 'Comma separated list of globs used for exclusion. Defaults to "node_modules/**"', 'node_modules/**')
     .option('--header <path>', 'Path to HTML file used as header on all documents.')
     .option('--footer <path>', 'Path to HTML file used as footer on all documents.')
@@ -15,10 +16,9 @@ _cli
     .usage("[options] file ...")
 
 
-var argv = _cli.parse(process.argv);
-_cli.input = _cli.args;
+_cli.parse(process.argv);
 
-if (_cli.input.length > 0) {
+if (_cli.input || _cli.args.length > 0) {
     _mdown.batchProcess(_cli);
 } else {
     processStdIn();
