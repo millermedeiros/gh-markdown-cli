@@ -12,13 +12,13 @@ _cli
     .option('--exclude <globs>', 'Comma separated list of globs used for exclusion. Defaults to "node_modules/**"', 'node_modules/**')
     .option('--header <path>', 'Path to HTML file used as header on all documents.')
     .option('--footer <path>', 'Path to HTML file used as footer on all documents.')
-    .option('--encoding <encoding>', 'File encoding. Defaults to "utf-8".', 'utf-8');
+    .option('--encoding <encoding>', 'File encoding. Defaults to "utf-8".', 'utf-8')
+    .usage("[options] file ...")
 
 
 _cli.parse(process.argv);
 
-
-if (_cli.input) {
+if (_cli.input || _cli.args.length > 0) {
     _mdown.batchProcess(_cli);
 } else {
     processStdIn();
