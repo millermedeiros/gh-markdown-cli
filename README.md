@@ -68,6 +68,25 @@ curl https://raw.github.com/millermedeiros/gh-markdown-cli/master/README.md | md
 If you don't specify the `--output` it will echo the result to `stdout` by default.
 
 
+### Vim and other text editors
+
+Since this tool works with the `stdin` and `stdout` you can use it from inside Vim to
+convert the selected text into HTML:
+
+```vim
+vnoremap <silent> <leader>md :! mdown<CR>
+```
+
+Or if you want to convert the whole file (`%` is expanded to the current buffer file
+name):
+
+```vim
+:! mdown %
+```
+
+Plugins for other text editors can probably be easily coded.
+
+
 ### More
 
 For a list of all available options run `mdown -h`:
