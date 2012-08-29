@@ -77,11 +77,10 @@ convert the selected text into HTML:
 vnoremap <silent> <leader>md :! mdown<CR>
 ```
 
-Or if you want to convert the whole file (`%` is expanded to the current buffer file
-name):
+Or if you want to convert the whole file content:
 
 ```vim
-:! mdown %
+:%!mdown
 ```
 
 Plugins for other text editors can probably be easily coded.
