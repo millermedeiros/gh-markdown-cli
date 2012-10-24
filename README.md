@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/millermedeiros/gh-markdown-cli.png)](http://travis-ci.org/millermedeiros/gh-markdown-cli)
 # Github Flavored Markdown Node.js CLI
 
 Batch convert Markdown files into HTML.
