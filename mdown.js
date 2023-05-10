@@ -14,7 +14,7 @@ exports.batchProcess = function(opts){
 
     opts.encoding = opts.encoding || DEFAULT_ENCODING;
 
-    _glob(opts.input, null, function(er, files){
+    _glob.glob(opts.input).then(function(files, err){
 
         if (opts.exclude) {
             files = filterFiles(files, opts.exclude);
@@ -37,7 +37,7 @@ function filterFiles(files, exclude) {
     var excludes = exclude.split(',');
     return files.filter(function(filePath){
         return ! excludes.some(function(glob){
-            return _minimatch(filePath, glob);
+            return _minimatch.minimatch(filePath, glob);
         });
     });
 }

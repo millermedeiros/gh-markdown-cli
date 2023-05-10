@@ -17,9 +17,10 @@ _cli
 
 _cli.parse(process.argv);
 
+const options = _cli.opts();
 
-if (_cli.input) {
-    _mdown.batchProcess(_cli);
+if (options.input) {
+    _mdown.batchProcess(options);
 } else {
     processStdIn();
 }
