@@ -29,16 +29,16 @@ if (options.input) {
 function processStdIn(){
     var buf = '';
 
-    process.stdin.setEncoding(_cli.encoding);
+    process.stdin.setEncoding(options.encoding);
 
     process.stdin.on('data', function(chunk){
         buf += chunk;
     });
 
     process.stdin.on('end', function(){
-        var html = _mdown.toHTML(buf, _cli);
-        if (_cli.output) {
-            require('fs').writeFileSync(_cli.output, html, _cli.encoding);
+        var html = _mdown.toHTML(buf, options);
+        if (options.output) {
+            require('fs').writeFileSync(options.output, html, options.encoding);
         } else {
             console.log(html);
         }
